@@ -49,6 +49,9 @@ Documentation = "https://github.com/manuelkonrad/promptart#readme"
 Issues = "https://github.com/manuelkonrad/promptart/issues"
 Source = "https://github.com/manuelkonrad/promptart"
 
+[project.scripts]
+promptart = "promptart.__main__:entrypoint"
+
 # ~~~~~ #
 # Hatch #
 # ~~~~~ #

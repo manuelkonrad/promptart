@@ -21,8 +21,29 @@ Simple frontend for accessing image and speech generation APIs.
 
 ## Getting Started
 
+Install `promptart` using `pipx`:
+
 ```console
-pip install promptart
+pipx install promptart
+```
+
+Alternatively, install `promptart` using `pip`:
+
+```console
+pip install --user promptart
+```
+
+Start the application:
+
+```console
+promptart
+```
+
+Additional `streamlit` arguments can be appended. For example,
+to change the bind address and port:
+
+```console
+promptart --server.address 0.0.0.0 --server.port 5000
 ```
 
 ## License
