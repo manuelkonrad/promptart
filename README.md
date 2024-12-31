@@ -12,7 +12,13 @@
 [![Types - Mypy](https://img.shields.io/badge/types-Mypy-blue.svg)](https://github.com/python/mypy)
 [![Security - Bandit](https://img.shields.io/badge/security-Bandit-yellow.svg)](https://github.com/PyCQA/bandit)
 
-Simple frontend for accessing image and speech generation APIs. Currently supporting OpenAI Dall-E and Text-to-Speech models. Based on Streamlit.
+Simple frontend for accessing image and speech generation APIs. Made with Streamlit.
+
+Currently supported:
+
+- Black Forest Labs Flux (Text-to-Image, In/Out-Painting, Image Variation, Structural Conditioning)
+- OpenAI Dall-E (Text-to-Image)
+- OpenAI TTS (Text-to-Speech)
 
 ## Table of Contents
 
@@ -39,12 +45,25 @@ Start the application:
 promptart
 ```
 
-Additional `streamlit` arguments can be appended. For example,
-to change the bind address and port:
+Additional `streamlit` arguments can be appended. For example, to change the server port:
 
 ```console
-promptart --server.address 0.0.0.0 --server.port 5000
+promptart --server.port 5000
 ```
+
+The API keys for authentication can be provided in the following ways:
+
+1. Setting environment variables `BFL_API_KEY` / `OPENAI_API_KEY`.
+2. Creating `~/promptart/config.json` populated with parameters `bfl_api_key` / `openai_api_key`.
+3. If 1. and 2. are not set, the API keys can also be provided in the frontend.
+
+Further information about creating API keys:
+
+- [Black Forest Labs Documentation](https://docs.bfl.ml/quick_start/create_account)
+- [OpenAI Documentation](https://platform.openai.com/docs/quickstart)
+
+To limit access to the frontend, a simple password check can be enabled by
+setting the environment variable `PROMPTART_PASSWORD`.
 
 ## License
 

@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 import os
+from collections.abc import Callable
 from pathlib import Path
 
 import streamlit as st
@@ -15,7 +16,16 @@ from promptart.constants import (
 )
 
 
-def gallery(object_base_path, prompt_base_path, download_label, media_function):
+def gallery(
+    object_base_path: Path,
+    prompt_base_path: Path,
+    download_label: str,
+    media_function: Callable,
+) -> None:
+    """
+    App page definition for a gallery of past generations.
+    """
+
     chosen_date = st.sidebar.date_input("Generation Date")
     generations_date_path = Path(object_base_path, str(chosen_date))
     prompt_date_path = Path(prompt_base_path, str(chosen_date))
@@ -41,9 +51,17 @@ def gallery(object_base_path, prompt_base_path, download_label, media_function):
                     )
 
 
-def speech_gallery():
+def speech_gallery() -> None:
+    """
+    Variation of the gallery page for speech generations.
+    """
+
     gallery(SPEECH_GEN_BASE_PATH, SPEECH_PROMPT_BASE_PATH, "Download Audio", st.audio)
 
 
-def image_gallery():
+def image_gallery() -> None:
+    """
+    Variation of the gallery page for image generations.
+    """
+
     gallery(IMAGE_GEN_BASE_PATH, IMAGE_PROMPT_BASE_PATH, "Download Image", st.image)

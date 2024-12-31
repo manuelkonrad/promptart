@@ -20,7 +20,7 @@ logo = """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
      transform="translate(-106.94714,-68.668756)">
     <g
        id="text2-5"
-       style="font-size:8.46667px;font-family:'Josefin Sans';-inkscape-font-specification:'Josefin Sans';fill:#00ccff;stroke-width:0.264583"
+       style="font-size:8.46667px;font-family:'Josefin Sans';-inkscape-font-specification:'Josefin Sans';fill:#ff4b4b;stroke-width:0.264583"
        aria-label="promptart">
       <path
          style="fill:#999999"

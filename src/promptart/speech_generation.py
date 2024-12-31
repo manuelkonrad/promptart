@@ -11,12 +11,22 @@ from pathlib import Path
 import streamlit as st
 from openai import OpenAI
 
-from promptart.constants import SPEECH_GEN_BASE_PATH, SPEECH_PROMPT_BASE_PATH
+from promptart.authentication import check_openai_api_key
+from promptart.constants import (
+    SPEECH_GEN_BASE_PATH,
+    SPEECH_PROMPT_BASE_PATH,
+    TTS_MODELS,
+)
 
 
-def speech_generation():
-    with st.sidebar.form("Input Parameters", border=False):
-        model = st.selectbox("Model", ["tts-1", "tts-1-hd"])
+def speech_generation() -> None:
+    """
+    App page definition for OpenAI speech generation tasks.
+    """
+
+    model = st.sidebar.selectbox("Model", TTS_MODELS)
+    check_openai_api_key()
+    with st.sidebar.form("tts_param_input", border=False):
         voice = st.selectbox(
             "Voice",
             [
@@ -41,7 +51,7 @@ def speech_generation():
             tooltip = "API key missing."
         else:
             disabled = False
-            tooltip = "Click to start image generation."
+            tooltip = "Click to start speech generation."
         run_button = st.form_submit_button(
             "Run",
             type="secondary",
@@ -59,20 +69,20 @@ def speech_generation():
         os.makedirs(prompt_today_path)
 
     if "last_speech" not in st.session_state:
-        st.session_state["last_speech"] = None
-        st.session_state["last_speech_prompt"] = None
+        st.session_state["last_speech"] = {}
+        st.session_state["last_speech_prompt"] = {}
 
     if run_button:
         with st.spinner("Speech generation in progress ..."):
             client = OpenAI(**st.session_state["openai_client_args"])
             response = client.audio.speech.create(
                 model=model,
-                voice=voice,
-                response_format=response_format,
+                voice=voice,  # type: ignore
+                response_format=response_format,  # type: ignore
                 speed=speed,
                 input=input_text,
             )
-            base_name = str(time.time()) + "_" + str(uuid.uuid4())
+            base_name = str(time.time()).replace(".", "_") + "_" + str(uuid.uuid4())
             speech_path = Path(
                 generations_today_path, base_name + "." + response_format
             )
@@ -85,16 +95,18 @@ def speech_generation():
             )
             with open(prompt_path, "w") as outfile:
                 outfile.write(all_prompts)
-            st.session_state["last_speech"] = speech_path
-            st.session_state["last_speech_prompt"] = all_prompts
+            st.session_state["last_speech"][model] = speech_path
+            st.session_state["last_speech_prompt"][model] = all_prompts
 
-    if st.session_state["last_speech"]:
+    if st.session_state["last_speech"].get(model):
         with st.container(border=True):
-            st.audio(st.session_state["last_speech"])
-            st.write(st.session_state["last_speech_prompt"])
-            with open(st.session_state["last_speech"], "rb") as download_file:
+            st.audio(st.session_state["last_speech"].get(model))
+            st.write(st.session_state["last_speech_prompt"].get(model))
+            with open(
+                st.session_state["last_speech"].get(model), "rb"
+            ) as download_file:
                 st.download_button(
                     "Download Audio",
                     data=download_file,
-                    file_name=st.session_state["last_speech"].name,
+                    file_name=st.session_state["last_speech"].get(model).name,
                 )

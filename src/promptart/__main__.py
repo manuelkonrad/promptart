@@ -8,7 +8,7 @@ from pathlib import Path
 from streamlit.web.cli import main
 
 
-def entrypoint():
+def entrypoint() -> None:
     lib_path = Path(__file__).parent
     main(["run", str(Path(lib_path, "app.py"))] + sys.argv[1:])
 
