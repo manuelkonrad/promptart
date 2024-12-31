@@ -34,7 +34,9 @@ def speech_generation():
         response_format = st.selectbox("Format", ["wav", "aac", "mp3"])
         speed = st.slider("Speed", 0.25, 4.0, 1.0, step=0.05)
         input_text = st.text_area("Text", height=250)
-        if not os.getenv("OPENAI_API_KEY"):
+        if not os.getenv("OPENAI_API_KEY") and not st.session_state[
+            "openai_client_args"
+        ].get("api_key"):
             disabled = True
             tooltip = "API key missing."
         else:
@@ -62,7 +64,7 @@ def speech_generation():
 
     if run_button:
         with st.spinner("Speech generation in progress ..."):
-            client = OpenAI()
+            client = OpenAI(**st.session_state["openai_client_args"])
             response = client.audio.speech.create(
                 model=model,
                 voice=voice,

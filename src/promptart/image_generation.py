@@ -29,7 +29,9 @@ def image_generation():
         optional_params = {}
     with st.sidebar.form("Input Parameters", border=False):
         prompt_text = st.text_area("Prompt", height=250)
-        if not os.getenv("OPENAI_API_KEY"):
+        if not os.getenv("OPENAI_API_KEY") and not st.session_state[
+            "openai_client_args"
+        ].get("api_key"):
             disabled = True
             tooltip = "API key missing."
         else:
@@ -57,7 +59,7 @@ def image_generation():
 
     if run_button and prompt_text:
         with st.spinner("Image generation in progress ..."):
-            client = OpenAI()
+            client = OpenAI(**st.session_state["openai_client_args"])
             response = client.images.generate(
                 model=model,
                 prompt=prompt_text,
