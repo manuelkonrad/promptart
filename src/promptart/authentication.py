@@ -10,19 +10,19 @@ import streamlit as st
 from promptart.constants import CONFIG_PATH
 
 
-def get_api_key(api_key_name: str) -> str | None:
+def get_api_key(api_key_name: str) -> str:
     """
     Checks if API key is configured in default config file.
     Otherwise, ask user via popover password input in sidebar.
     """
 
-    api_key = None
+    api_key = ""
 
     # check config file
     if CONFIG_PATH.exists():
         with open(CONFIG_PATH, "r") as config_file:
             config = json.load(config_file)
-            api_key = config.get(api_key_name)
+            api_key = config.get(api_key_name, "")
 
     # if not configured, ask from user
     if not api_key:

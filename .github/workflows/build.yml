@@ -1,14 +1,12 @@
 name: build
 
 on:
-  # pull_request:
-  #   branches:
-  #   - main
-  #   - develop
-  # push:
-  #   branches:
-  #   - main
-  #   - develop
+  pull_request:
+    branches:
+    - main
+  push:
+    branches:
+    - main
   push:
     tags:
     - v*
